@@ -12,6 +12,11 @@ namespace TopSpeed.Speech.Prism
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID")))
                 return new AndroidMethods();
 
+#if NET10_0_OR_GREATER
+            if (OperatingSystem.IsIOS())
+                return new MacMethods();
+#endif
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return new WindowsMethods();
 

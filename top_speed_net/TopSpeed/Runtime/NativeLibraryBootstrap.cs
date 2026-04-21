@@ -190,6 +190,8 @@ namespace TopSpeed.Runtime
 
         private static IReadOnlyList<string> GetMiniAudioCandidates()
         {
+            if (IsIOS())
+                return new[] { "miniaudioex", "__Internal" };
             if (IsAndroid())
                 return new[] { "libminiaudioex.so", "miniaudioex" };
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -201,6 +203,8 @@ namespace TopSpeed.Runtime
 
         private static IReadOnlyList<string> GetPhononCandidates()
         {
+            if (IsIOS())
+                return new[] { "phonon", "__Internal" };
             if (IsAndroid())
                 return new[] { "libphonon.so", "phonon" };
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -220,6 +224,8 @@ namespace TopSpeed.Runtime
 
         private static IReadOnlyList<string> GetPrismCandidates()
         {
+            if (IsIOS())
+                return new[] { "prism", "__Internal" };
             if (IsAndroid())
                 return new[] { "libprism.so", "prism" };
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -235,6 +241,15 @@ namespace TopSpeed.Runtime
             return OperatingSystem.IsAndroid();
 #else
             return RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID"));
+#endif
+        }
+
+        private static bool IsIOS()
+        {
+#if NET10_0_OR_GREATER
+            return OperatingSystem.IsIOS();
+#else
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Create("IOS"));
 #endif
         }
 #endif

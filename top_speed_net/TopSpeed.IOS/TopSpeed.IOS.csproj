@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+    <RootNamespace>TopSpeed.IOS</RootNamespace>
+    <AssemblyName>TopSpeed.IOS</AssemblyName>
+    <ApplicationId>com.topspeed.game</ApplicationId>
+    <ApplicationTitle>Top Speed</ApplicationTitle>
+    <ApplicationVersion>2026041501</ApplicationVersion>
+    <ApplicationDisplayVersion>2026.4.15.1</ApplicationDisplayVersion>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">iossimulator-x64</RuntimeIdentifier>
+    <TrimMode>partial</TrimMode>
+    <NoWarn>$(NoWarn);CS0108</NoWarn>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'ios-arm64' and '$(CodesignKey)' == ''">
+    <EnableCodeSigning>false</EnableCodeSigning>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Concentus" Version="1.1.7" />
+    <PackageReference Include="LiteNetLib" Version="1.3.1" />
+    <PackageReference Include="GetText.NET" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TopSpeed">
+      <HintPath>..\TopSpeed\bin\$(Configuration)\net10.0\TopSpeed.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <NativeReference Include="..\TopSpeed\ThirdParty\IOS\SDL3.xcframework" Kind="Framework" SmartLink="true" Condition="Exists('..\TopSpeed\ThirdParty\IOS\SDL3.xcframework')" />
+    <NativeReference Include="..\TopSpeed\ThirdParty\IOS\prism.xcframework" Kind="Framework" SmartLink="true" Condition="Exists('..\TopSpeed\ThirdParty\IOS\prism.xcframework')" />
+    <NativeReference Include="..\TopSpeed\ThirdParty\IOS\libprism.a" Kind="Static" SmartLink="true" ForceLoad="true" Condition="Exists('..\TopSpeed\ThirdParty\IOS\libprism.a')" />
+    <NativeReference Include="..\TopSpeed\ThirdParty\IOS\phonon.xcframework" Kind="Framework" SmartLink="true" Condition="Exists('..\TopSpeed\ThirdParty\IOS\phonon.xcframework')" />
+    <NativeReference Include="..\TopSpeed\ThirdParty\IOS\libphonon.a" Kind="Static" SmartLink="true" ForceLoad="true" Condition="Exists('..\TopSpeed\ThirdParty\IOS\libphonon.a')" />
+    <NativeReference Include="..\TopSpeed\ThirdParty\IOS\miniaudioex.xcframework" Kind="Framework" SmartLink="true" Condition="Exists('..\TopSpeed\ThirdParty\IOS\miniaudioex.xcframework')" />
+    <NativeReference Include="..\TopSpeed\ThirdParty\IOS\libminiaudioex.a" Kind="Static" SmartLink="true" ForceLoad="true" Condition="Exists('..\TopSpeed\ThirdParty\IOS\libminiaudioex.a')" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <BundleResource Include="..\Sounds\**\*">
+      <Link>Sounds\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </BundleResource>
+    <BundleResource Include="..\Tracks\**\*">
+      <Link>Tracks\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </BundleResource>
+    <BundleResource Include="..\Vehicles\**\*">
+      <Link>Vehicles\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </BundleResource>
+    <BundleResource Include="..\languages\client\**\*">
+      <Link>languages\client\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </BundleResource>
+    <BundleResource Include="..\languages\server\**\*">
+      <Link>languages\server\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\docs\**\*.html">
+      <Link>docs\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </BundleResource>
+  </ItemGroup>
+
+  <Target Name="BuildTopSpeedHost" BeforeTargets="PrepareForBuild">
+    <MSBuild
+      Projects="..\TopSpeed\TopSpeed.csproj"
+      Targets="Restore;Build"
+      Properties="Configuration=$(Configuration);IOSHostBuild=true"
+      RemoveProperties="RuntimeIdentifier;RuntimeIdentifiers;TargetFramework;PlatformTarget" />
+  </Target>
+</Project>

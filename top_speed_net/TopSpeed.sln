@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TS.Sdl", "TS.Sdl\TS.Sdl.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopSpeed.Android", "TopSpeed.Android\TopSpeed.Android.csproj", "{F801D5DD-6DB5-4583-ACAC-762FF2350653}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopSpeed.IOS", "TopSpeed.IOS\TopSpeed.IOS.csproj", "{DFE25819-C0DC-4504-A72D-FE1C59509FFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,18 @@ Global
 		{F801D5DD-6DB5-4583-ACAC-762FF2350653}.Release|x64.Build.0 = Release|Any CPU
 		{F801D5DD-6DB5-4583-ACAC-762FF2350653}.Release|x86.ActiveCfg = Release|Any CPU
 		{F801D5DD-6DB5-4583-ACAC-762FF2350653}.Release|x86.Build.0 = Release|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Debug|x64.Build.0 = Debug|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Debug|x86.Build.0 = Debug|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Release|x64.ActiveCfg = Release|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Release|x64.Build.0 = Release|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Release|x86.ActiveCfg = Release|Any CPU
+		{DFE25819-C0DC-4504-A72D-FE1C59509FFD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

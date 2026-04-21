@@ -1,0 +1,99 @@
+Current needs for the iOS host
+
+1. Reboot Windows
+   The .NET workload installers reported a pending reboot. Reboot before relying on iOS/Android workload behavior.
+
+2. Java/JDK for Android solution builds is configured
+   Android Studio includes a usable JDK here:
+   C:\Program Files\Android\Android Studio\jbr
+
+   Verified:
+   C:\Program Files\Android\Android Studio\jbr\bin\java.exe
+   C:\Program Files\Android\Android Studio\jbr\bin\javac.exe
+   C:\Program Files\Android\Android Studio\jbr\bin\jarsigner.exe
+
+   Configured user JAVA_HOME:
+   C:\Program Files\Android\Android Studio\jbr
+
+   Configured user PATH entry:
+   C:\Program Files\Android\Android Studio\jbr\bin
+
+   Existing terminals may need to be restarted before java is found automatically.
+
+3. SDL3.xcframework is present
+   Found extracted SDL framework here:
+   top_speed_net/TopSpeed/ThirdParty/IOS/SDL3.xcframework
+
+   The iOS project references this framework when present.
+
+4. iOS Prism native binary is present
+   Found source artifact:
+   prism-ios-arm64/static/release/lib/libprism.a
+
+   Copied into:
+   top_speed_net/TopSpeed/ThirdParty/IOS/libprism.a
+
+   The iOS project now references this static library when present.
+
+5. iOS Steam Audio native binary is present
+   Found source artifact:
+   libphonon.a
+
+   Copied into:
+   top_speed_net/TopSpeed/ThirdParty/IOS/libphonon.a
+
+   The iOS project now references this static library when present.
+
+6. iOS MiniAudioEx native runtime is present
+   MiniAudioEx is not a normal external iOS download. In this repo it is the checked-in MiniAudioExNET wrapper project:
+   top_speed_net/MiniAudioExNET
+
+   Current local runtimes are:
+   android-arm
+   android-arm64
+   linux-arm
+   linux-arm64
+   linux-x64
+   osx-arm64
+   osx-x64
+   win-x64
+   win-x86
+
+   Found source artifact:
+   libminiaudioex.a
+
+   Copied into:
+   top_speed_net/TopSpeed/ThirdParty/IOS/libminiaudioex.a
+
+   The iOS project now references this static library when present.
+
+7. Unsigned iOS build target
+   The project now defaults to:
+   iossimulator-x64
+
+   This supports unsigned simulator/build-output verification.
+
+   Physical iPhone/iPad installation is different: Apple requires code signing to install on a real device. Since unsigned output is the goal, do not use ios-arm64 unless you later decide to configure signing.
+
+   If ios-arm64 is selected without a CodesignKey, the project disables code signing for build-output inspection.
+
+Verified so far
+
+- dotnet workload list shows android and ios installed.
+- Full Debug solution build passes with Android Studio JDK available:
+  dotnet build top_speed_net/TopSpeed.sln -c Debug
+
+- iOS host build passes:
+  dotnet build top_speed_net/TopSpeed.IOS/TopSpeed.IOS.csproj -c Debug -f net10.0-ios
+
+- Tests pass:
+  dotnet test top_speed_net/TopSpeed.Tests/TopSpeed.Tests.csproj -c Debug --no-build
+
+- Added GitHub Actions workflow for unsigned IPA output:
+  .github/workflows/ios-unsigned-ipa.yml
+
+  Run it from GitHub Actions using:
+  iOS Unsigned IPA -> Run workflow
+
+  Expected artifact:
+  TopSpeed.IOS-unsigned-ipa

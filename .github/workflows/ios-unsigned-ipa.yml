@@ -1,0 +1,73 @@
+name: iOS Unsigned IPA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build_ios_unsigned_ipa:
+    name: Build Unsigned iOS IPA
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: top_speed_net
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install markdown
+
+      - name: Install iOS workload
+        shell: pwsh
+        run: dotnet workload install ios
+
+      - name: Restore iOS project
+        shell: pwsh
+        run: dotnet restore TopSpeed.IOS/TopSpeed.IOS.csproj
+
+      - name: Publish unsigned IPA
+        shell: pwsh
+        run: |
+          $artifactDir = Join-Path $env:GITHUB_WORKSPACE "artifacts"
+          New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
+          $ipaPath = Join-Path $artifactDir "TopSpeed.IOS-unsigned.ipa"
+
+          dotnet publish TopSpeed.IOS/TopSpeed.IOS.csproj `
+            --configuration Release `
+            --framework net10.0-ios `
+            --runtime ios-arm64 `
+            -p:EnableCodeSigning=false `
+            -p:ArchiveOnBuild=false `
+            -p:BuildIpa=true `
+            -p:IpaPackagePath="$ipaPath"
+
+          if (-not (Test-Path $ipaPath)) {
+            Write-Host "Expected IPA was not created at $ipaPath"
+            Get-ChildItem -Path TopSpeed.IOS -Recurse -Filter *.ipa | Select-Object FullName, Length
+            throw "Unsigned IPA was not produced."
+          }
+
+          Get-Item $ipaPath | Select-Object FullName, Length
+
+      - name: Upload unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: TopSpeed.IOS-unsigned-ipa
+          if-no-files-found: error
+          path: artifacts/TopSpeed.IOS-unsigned.ipa
